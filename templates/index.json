@@ -29,47 +29,132 @@
       "settings": {
         "image_overlay_opacity": 40,
         "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
         "image_behavior": "none",
+        "desktop_content_position": "bottom-center",
         "desktop_content_alignment": "center",
+        "show_text_box": false,
         "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
         "stack_images_on_mobile": false,
+        "mobile_content_alignment": "center",
         "show_text_below": false
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
+    "custom_products_list_4tLcbm": {
+      "type": "custom-products-list",
+      "blocks": {
+        "product_RBiGaL": {
+          "type": "product",
+          "settings": {
+            "product": "cloudburst-gel-hydrator",
+            "star_rating": 2,
+            "reviews": "10 reviews"
+          }
+        },
+        "product_nER7VU": {
+          "type": "product",
+          "settings": {
+            "product": "sunstone-hair-elixir",
+            "star_rating": 3,
+            "reviews": "10 reviews"
+          }
+        },
+        "product_pJeHwL": {
+          "type": "product",
+          "settings": {
+            "product": "love-your-body-collection",
+            "star_rating": 3,
+            "reviews": "10 reviews"
+          }
+        },
+        "product_iN7Rdb": {
+          "type": "product",
+          "settings": {
+            "product": "superbloom-palette",
+            "star_rating": 5,
+            "reviews": "10 reviews"
+          }
+        }
+      },
+      "block_order": [
+        "product_RBiGaL",
+        "product_nER7VU",
+        "product_pJeHwL",
+        "product_iN7Rdb"
+      ],
       "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "padding_top": 44,
-        "padding_bottom": 36
+        "heading": "Shop the Marketplace",
+        "descr": "<p>We go out of our way to source products that are vegan, cruelty-free and free from most common toxins.<\/p>",
+        "link": "Shop All",
+        "link_url": "shopify:\/\/collections"
+      }
+    },
+    "reviews_RAK8U7": {
+      "type": "reviews",
+      "blocks": {
+        "review_VYBqeg": {
+          "type": "review",
+          "settings": {
+            "stars_count": 4,
+            "title": "Love Bae Juice!",
+            "description": "Trialled this product last week. I have been using hydrate etc to combat hangovers. I played 18 holes of golf the next day after getting home at 2AM! Pleasantly surprised",
+            "reviewer_name": "Scotty H.",
+            "img": "shopify:\/\/shop_images\/Frame25_2.png"
+          }
+        },
+        "review_7WXaEk": {
+          "type": "review",
+          "settings": {
+            "stars_count": 3,
+            "title": "Love Bae Juice!",
+            "description": "Trialled this product last week. I have been using hydrate etc to combat hangovers. I played 18 holes of golf the next day after getting home at 2AM! Pleasantly surprised",
+            "reviewer_name": "Scotty H."
+          }
+        },
+        "review_WVWVRM": {
+          "type": "review",
+          "settings": {
+            "stars_count": 5,
+            "title": "Love Bae Juice!",
+            "description": "Trialled this product last week. I have been using hydrate etc to combat hangovers. I played 18 holes of golf the next day after getting home at 2AM! Pleasantly surprised",
+            "reviewer_name": "Scotty H."
+          }
+        },
+        "review_GyYxrT": {
+          "type": "review",
+          "settings": {
+            "stars_count": 5,
+            "title": "Love Bae Juice!",
+            "description": "Trialled this product last week. I have been using hydrate etc to combat hangovers. I played 18 holes of golf the next day after getting home at 2AM! Pleasantly surprised",
+            "reviewer_name": "Scotty H."
+          }
+        }
+      },
+      "block_order": [
+        "review_VYBqeg",
+        "review_7WXaEk",
+        "review_WVWVRM",
+        "review_GyYxrT"
+      ],
+      "settings": {
+        "title": "Reviews from our customers",
+        "subtitle": "All Natural, Packed with Superfoods Probiotics and Antioxidants",
+        "btn_url": "",
+        "btn_text": "Write a review",
+        "background_color": "#172D4B",
+        "text_color": "#FFFFFF",
+        "review_bg": "#FFFFFF",
+        "review_text_color": "#172D4B",
+        "stars_color": "#E47467",
+        "margin_top": 60,
+        "margin_bottom": 60,
+        "margin_top_m": 40,
+        "margin_bottom_m": 40
       }
     }
   },
   "order": [
     "image_banner",
-    "featured_collection"
+    "custom_products_list_4tLcbm",
+    "reviews_RAK8U7"
   ]
 }

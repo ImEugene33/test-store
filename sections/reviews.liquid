@@ -1,0 +1,339 @@
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+{%- assign s = section.settings -%}
+
+{%- if section.blocks.size > 0 -%}
+
+{{- 'reviews.css' | asset_url | stylesheet_tag -}}
+
+  {% style %}
+    #shopify-section-{{ section.id }}.reviews {
+      color: {{ s.background_color }};
+    }
+
+    #shopify-section-{{ section.id }}.reviews .reviews__wrapper {
+      background-color: {{ s.background_color }};
+    }
+
+    #shopify-section-{{ section.id }}.reviews .reviews__title,
+    #shopify-section-{{ section.id }}.reviews .reviews__subtitle {
+      color: {{ s.text_color }};
+    }
+
+    #shopify-section-{{ section.id }}.reviews .reviews__subtitle {
+      color: {{ s.text_color }};
+    }
+
+    #shopify-section-{{ section.id }}.reviews .reviews__button {
+      color: {{ s.text_color }};
+      border-color: {{ s.text_color }};
+    }
+
+    #shopify-section-{{ section.id }}.reviews .reviews__button:hover {
+      color: {{ s.background_color }};
+      background-color: {{ s.text_color }};
+    }
+
+    #shopify-section-{{ section.id }}.reviews .reviews__block {
+      background-color: {{ s.review_bg }};
+      color: {{ s.review_text_color }};
+    }
+
+    #shopify-section-{{ section.id }}.reviews .reviews__block .stars-rating path {
+      fill: {{ s.stars_color }};
+    }
+
+    #shopify-section-{{ section.id }} {
+      margin-top: {{ s.margin_top }}px;
+      margin-bottom: {{ s.margin_bottom }}px;
+    }
+
+    @media screen and (max-width: 768px) {
+      #shopify-section-{{ section.id }} {
+        margin-top: {{ s.margin_top_m }}px;
+        margin-bottom: {{ s.margin_bottom_m }}px;
+      }
+    }
+  {% endstyle %}
+
+  <div class="reviews__wrapper">
+    <div class="reviews__headings">
+      {%- if s.title != blank -%}
+        <div class="reviews__title">{{- s.title -}}</div>
+      {%- endif -%}
+
+      {%- if s.subtitle != blank -%}
+        <div class="reviews__subtitle">{{- s.subtitle -}}</div>
+      {%- endif -%}
+    </div>
+
+    <div class="reviews__slider-wrapper">
+      <div class="reviews__slider swiper">
+        <div class="swiper-wrapper">
+          {%- for block in section.blocks -%}
+            {%- assign b = block.settings -%}
+
+            <div class="reviews__block swiper-slide">
+              <div class="reviews__block-content">
+                {%- render 'stars' stars: b.stars_count -%}
+
+                {%- if b.title != blank -%}
+                  <div class="reviews__block-title">{{- b.title -}}</div>
+                {%- endif -%}
+
+                {%- if b.description != blank -%}
+                  <div class="reviews__block-description">{{- b.description -}}</div>
+                {%- endif -%}
+              </div>
+
+              {%- if b.reviewer_name != blank -%}
+                <div class="reviews__block-reviewer">
+                  <div class="reviews__block-reviewer-name">
+                    {%- assign name = b.reviewer_name | split: ' ' -%}
+                    {%- assign firstName = name[0] | slice: 0 -%}
+                    {%- assign secondName = name[1] | slice: 0 -%}
+
+                    <div class="reviews__block-reviewer-initials">
+                      {%- if b.img != blank -%}
+                        {{ b.img | image_url: width: 100 | image_tag: width: 1000, class: "reviews__block-reviewer-image" }}
+                      {% else %}
+                        {{- firstName -}}{{- secondName -}}
+                      {%- endif -%}
+                    </div>
+                    <span>{{- b.reviewer_name -}}</span>
+                  </div>
+
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+    </div>
+
+    {%- if s.btn_url != blank and s.btn_text != blank -%}
+      <a href="{{- s.btn_url -}}" class="reviews__button">{{- s.btn_text -}}</a>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+<script>
+  window.addEventListener("load", (event) => {
+    const swiper = new Swiper("#shopify-section-{{ section.id }} .reviews__slider", {
+      slidesPerView: 3,
+      spaceBetween: 8,
+      navigation: {
+        nextEl: "#shopify-section-{{ section.id }} .swiper-button-next",
+        prevEl: "#shopify-section-{{ section.id }} .swiper-button-prev",
+      },
+      pagination: {
+        el: "#shopify-section-{{ section.id }} .swiper-pagination",
+        clickable: true,
+      },
+      breakpoints: {
+        300: {
+          slidesPerView: 1.05,
+        },
+        768: {
+          slidesPerView: 2,
+          spaceBetween: 8,
+        },
+        992: {
+          slidesPerView: 3,
+          spaceBetween: 20,
+        }
+      },
+      on: {
+        init: function () {
+          const numSlides = this.slides.length;
+          if (numSlides < 3) {
+            let elemWidth = document.querySelector('.reviews__slider-wrapper');
+            let elemSwiper = document.querySelector('.reviews__slider-wrapper .swiper-wrapper');
+            elemWidth.style.width = '100%';
+            elemSwiper.style.justifyContent= "center";
+            swiperOptions.spaceBetween = 0;
+          }
+        }
+      }
+    });
+  });
+</script>
+
+{%- schema -%}
+  {
+    "name": "Reviews",
+    "tag": "section",
+    "class": "reviews",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Headigns"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Reviews from our customers"
+      },
+      {
+        "type": "text",
+        "id": "subtitle",
+        "label": "Subtitle",
+        "default": "All Natural, Packed with Superfoods Probiotics and Antioxidants"
+      },
+      {
+        "type": "header",
+        "content": "Button"
+      },
+      {
+        "type": "url",
+        "id": "btn_url",
+        "label": "Button url"
+      },
+      {
+        "type": "text",
+        "id": "btn_text",
+        "label": "Button text",
+        "default": "Write a review"
+      },
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background color",
+        "default": "#172D4B"
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "text_color",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "header",
+        "content": "Review block colors"
+      },
+      {
+        "type": "color",
+        "id": "review_bg",
+        "label": "Review background",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "review_text_color",
+        "label": "Review Text Color",
+        "default": "#172D4B"
+      },
+      {
+        "type": "color",
+        "id": "stars_color",
+        "label": "Stars color",
+        "default": "#E47467"
+      },
+      {
+        "type": "header",
+        "content": "Vertical margin (Desktop)"
+      },
+      {
+        "type": "range",
+        "id": "margin_top",
+        "min": 0,
+        "max": 200,
+        "step": 2,
+        "unit": "px",
+        "label": "Margin top",
+        "default": 60
+      },
+      {
+        "type": "range",
+        "id": "margin_bottom",
+        "min": 0,
+        "max": 200,
+        "step": 2,
+        "unit": "px",
+        "label": "Margin bottom",
+        "default": 60
+      },
+      {
+        "type": "header",
+        "content": "Vertical margin (Mobile)"
+      },
+      {
+        "type": "range",
+        "id": "margin_top_m",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "unit": "px",
+        "label": "Margin top",
+        "default": 40
+      },
+      {
+        "type": "range",
+        "id": "margin_bottom_m",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "unit": "px",
+        "label": "Margin bottom",
+        "default": 40
+      }
+    ],
+    "blocks": [
+      {
+        "name": "Review",
+        "type": "review",
+        "settings": [
+          {
+            "type": "range",
+            "id": "stars_count",
+            "label": "Stars count",
+            "unit": "str",
+            "min": 3,
+            "max": 5,
+            "step": 1,
+            "default": 5
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Love Bae Juice!"
+          },
+          {
+            "type": "textarea",
+            "id": "description",
+            "label": "Description",
+            "default": "Trialled this product last week. I have been using hydrate etc to combat hangovers. I played 18 holes of golf the next day after getting home at 2AM! Pleasantly surprised"
+          },
+          {
+            "type": "text",
+            "id": "reviewer_name",
+            "label": "Reviewer name",
+            "default": "Scotty H."
+          },
+          {
+            "type": "image_picker",
+            "id": "img",
+            "label": "Image"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "page",
+        "name": "Reviews"
+      }
+    ]
+  }
+{%- endschema -%}
