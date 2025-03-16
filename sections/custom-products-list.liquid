@@ -1,0 +1,146 @@
+{{- 'custom-product-list.css' | asset_url | stylesheet_tag -}}
+
+<section class="featured-products">
+  {% if section.settings.heading != blank %}
+    <h1 class="featured-products__heading">{{ section.settings.heading }}</h1>
+  {% endif %}
+  {% if section.settings.descr != blank %}
+    <div class="featured-products__descr">{{ section.settings.descr }}</div>
+  {% endif %}
+  {% if section.settings.link_url != blank %}
+    <a class="featured-products__link" href="{{ section.settings.link_url }}">{{ section.settings.link }}</a>
+  {% endif %}
+  {% if section.blocks.size > 0 %}
+    <div class="featured-products__grid">
+      {% for block in section.blocks %}
+        {% if block.settings.product != blank %}
+          {% assign product = all_products[block.settings.product] %}
+          <div class="product-card" data-product-id="{{ product.id }}">
+            <div class="product-card__wrapper">
+              {{ product.featured_image | image_url: width: 1000 | image_tag: class: 'product-card__image' }}
+            </div>
+            <p class="product-card__vendor">{{ product.vendor }}</p>
+            <h3 class="product-card__title">{{ product.title }}</h3>
+            <div class="product-card__price-wrapper">
+              <p class="product-card__price">{{ product.price | money }}</p>
+              <div class="product-card__rating">
+                <span class="stars">
+                  {% assign filled_stars = block.settings.star_rating %}
+                  {% for i in (1..5) %}
+                    {% if i <= filled_stars %}
+                      <span class="stars__star stars__star--filled">★</span>
+                    {% else %}
+                      <span class="stars__star stars__star--empty">★</span>
+                    {% endif %}
+                  {% endfor %}
+                </span>
+                {% if block.settings.reviews != blank %}
+                  <span class="reviews">{{ block.settings.reviews }}</span>
+                {% endif %}
+              </div>
+            </div>
+            <button class="add-to-cart" data-id="{{ product.selected_or_first_available_variant.id }}" data-title="{{ product.title }}">Add to Bag</button>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+</section>
+{% endif %}
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".add-to-cart").forEach(button => {
+      button.addEventListener("click", function () {
+        let productId = this.dataset.id;
+        let productTitle = this.dataset.title;
+        fetch("/cart/add.js", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: productId, quantity: 1 })
+        })
+        .then(response => response.json())
+        .then(() => {
+          showToast(`${productTitle} added to bag!`);
+        });
+      });
+    });
+  });
+
+  function showToast(message) {
+    let toast = document.getElementById("toast");
+    toast.textContent = message;
+    toast.classList.remove("hidden");
+    toast.classList.add("toast--show");
+    setTimeout(() => {
+      toast.classList.remove("toast--show");
+      toast.classList.add("hidden");
+    }, 3000);
+  }
+</script>
+
+
+{%- schema -%}
+{
+  "name": "Product Cards",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop the Marketplace"
+    },
+    {
+      "type": "richtext",
+      "id": "descr",
+      "label": "Description"
+    },
+    {
+      "type": "text",
+      "id": "link",
+      "label": "Link Title",
+      "default": "Shop All"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Select Product"
+        },
+        {
+          "type": "range",
+          "id": "star_rating",
+          "label": "Star Rating",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "reviews",
+          "label": "Reviews",
+          "default": "10 reviews"
+        },
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Cards",
+      "category": "Custom"
+    }
+  ]
+}
+{%- endschema -%}

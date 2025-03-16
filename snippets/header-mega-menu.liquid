@@ -4,7 +4,7 @@
   Usage:
   {% render 'header-mega-menu' %}
 {% endcomment %}
-
+{% comment %}
 <nav class="header__inline-menu">
   <ul class="list-menu list-menu--inline" role="list">
     {%- for link in section.settings.menu.links -%}
@@ -91,4 +91,43 @@
       </li>
     {%- endfor -%}
   </ul>
-</nav>
+</nav> {% endcomment %}
+{{- 'custom-mega.css' | asset_url | stylesheet_tag -}}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<ul class="mega-menu">
+  {% for link in linklists.main-menu.links %}
+    <li class="mega-menu__item">
+      <span class="mega-menu__link">
+        {{ link.title }}
+        {% if link.links != blank %}
+          <i class="fa-solid fa-chevron-down"></i>
+        {% endif %}
+      </span>
+
+      {% if link.links != blank %}
+        <div class="mega-menu__dropdown">
+          {% for sub_link in link.links %}
+            <div class="mega-menu__column">
+              <span class="mega-menu__title">
+                {{ sub_link.title }}
+              </span>
+
+              {% if sub_link.links != blank %}
+                {% assign sorted_links = sub_link.links | sort: "title" %}
+                <ul class="mega-menu__sub-nav">
+                  {% for sub_sub_link in sorted_links %}
+                    <li><a href="{{ sub_sub_link.url }}">{{ sub_sub_link.title }}</a></li>
+                  {% endfor %}
+                  <li><a href="{{ sub_link.url }}" class="shop-all">Shop All</a></li>
+                </ul>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>
+
